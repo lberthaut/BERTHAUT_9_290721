@@ -17,9 +17,7 @@ export const filteredBills = (data, status) => {
       } else {
         // in prod environment
         const userEmail = JSON.parse(localStorage.getItem("user")).email
-        selectCondition =
-          (bill.status === status) &&
-          [...USERS_TEST, userEmail].includes(bill.email)
+        selectCondition =(bill.status === status) &&[...USERS_TEST, userEmail].includes(bill.email)
       }
 
       return selectCondition
@@ -28,10 +26,8 @@ export const filteredBills = (data, status) => {
 
 export const card = (bill) => {
   const firstAndLastNames = bill.email.split('@')[0]
-  const firstName = firstAndLastNames.includes('.') ?
-    firstAndLastNames.split('.')[0] : ''
-  const lastName = firstAndLastNames.includes('.') ?
-  firstAndLastNames.split('.')[1] : firstAndLastNames
+  const firstName = firstAndLastNames.includes('.') ? firstAndLastNames.split('.')[0] : ''
+  const lastName = firstAndLastNames.includes('.') ? firstAndLastNames.split('.')[1] : firstAndLastNames
 
   return (`
     <div class='bill-card' id='open-bill${bill.id}' data-testid='open-bill${bill.id}'>
@@ -156,12 +152,8 @@ export default class {
   // not need to cover this function by tests
   getBillsAllUsers = () => {
     if (this.firestore) {
-      return this.firestore
-      .bills()
-      .get()
-      .then(snapshot => {
-        const bills = snapshot.docs
-        .map(doc => ({
+      return this.firestore.bills().get().then(snapshot => {
+        const bills = snapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),
           date: doc.data().date,
@@ -176,11 +168,7 @@ export default class {
   // not need to cover this function by tests
   updateBill = (bill) => {
     if (this.firestore) {
-    return this.firestore
-      .bill(bill.id)
-      .update(bill)
-      .then(bill => bill)
-      .catch(console.log)
+    return this.firestore.bill(bill.id).update(bill).then(bill => bill).catch(console.log)
     }
   }
 }

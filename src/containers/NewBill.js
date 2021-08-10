@@ -19,12 +19,7 @@ export default class NewBill {
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
-    this.firestore
-      .storage
-      .ref(`justificatifs/${fileName}`)
-      .put(file)
-      .then(snapshot => snapshot.ref.getDownloadURL())
-      .then(url => {
+    this.firestore.storage.ref(`justificatifs/${fileName}`).put(file).then(snapshot => snapshot.ref.getDownloadURL()).then(url => {
         this.fileUrl = url
         this.fileName = fileName
       })
@@ -53,10 +48,7 @@ export default class NewBill {
   // not need to cover this function by tests
   createBill = (bill) => {
     if (this.firestore) {
-      this.firestore
-      .bills()
-      .add(bill)
-      .then(() => {
+      this.firestore.bills().add(bill).then(() => {
         this.onNavigate(ROUTES_PATH['Bills'])
       })
       .catch(error => error)

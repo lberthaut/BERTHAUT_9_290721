@@ -32,12 +32,8 @@ export default class {
     const userEmail = localStorage.getItem('user') ?
       JSON.parse(localStorage.getItem('user')).email : ""
     if (this.firestore) {
-      return this.firestore
-      .bills()
-      .get()
-      .then(snapshot => {
-        const bills = snapshot.docs
-          .map(doc => {
+      return this.firestore.bills().get().then(snapshot => {
+        const bills = snapshot.docs.map(doc => {
             try {
               return {
                 ...doc.data(),
