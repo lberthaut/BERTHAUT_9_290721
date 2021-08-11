@@ -43,8 +43,16 @@ export default class NewBill {
     }
     this.createBill(bill)
     this.onNavigate(ROUTES_PATH['Bills'])
-  }
+ /*    document.querySelector(`input[data-testid="file"]`).reportValidity(); */
 
+/*  if (!hasExtension(document.querySelector(`input[data-testid="file"]`), ['.jpg', '.gif', '.png'])) {
+  alert("Ce type de fichier n'est pas supporté. Veuillez joindre un fichier .jpg, .jpeg, ou .png")
+}
+function hasExtension(inputID, exts) {
+  var fileName = document.getElementById(inputID).nodeValue;
+  return (new RegExp('(' + exts.join('|').replace(/\./g, '\\.') + ')$')).test(fileName);
+} */
+  }
   // not need to cover this function by tests
   createBill = (bill) => {
     if (this.firestore) {

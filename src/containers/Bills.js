@@ -52,6 +52,26 @@ export default class {
             }
           })
           .filter(bill => bill.email === userEmail)
+           /* for(let i=0; i<bills.length; i++){
+            let billsDateNow = Date.now(bills[i].date);
+            billsArrayByDate = [];
+            billsArrayByDate.push(billsDateNow[i]);
+           billsDateNow[i].sort(function(a, b){
+             return a.billsDateNow - b/billsDateNow;
+           });
+          } */
+
+          /* bills.sort(function(a, b){
+            a = new Date(a.date);
+            b = new Date(b.date);
+            return a > b ? -1 : a < b ? 1 : 0;
+          }) */
+
+          /* bills.sort(function(a, b) {
+            return new Date(a.date) - new Date(b.date)
+          }) */
+
+          
           console.log('length', bills.length)
         return bills
       })
