@@ -57,7 +57,7 @@ export default class {
             billsArrayByDate = [];
             billsArrayByDate.push(billsDateNow[i]);
            billsDateNow[i].sort(function(a, b){
-             return a.billsDateNow - b/billsDateNow;
+             return a.billsDateNow - b.billsDateNow;
            });
           } */
 
@@ -71,10 +71,9 @@ export default class {
             return new Date(a.date) - new Date(b.date)
           }) */
 
-          
           console.log('length', bills.length)
         return bills
       })
       .catch(error => error)
     }
-}
+}}
