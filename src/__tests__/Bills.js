@@ -1,13 +1,17 @@
 import { screen } from "@testing-library/dom"
 import BillsUI from "../views/BillsUI.js"
 import { bills } from "../fixtures/bills.js"
+/* import default from "../views/VerticalLayout.js" */
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
     test("Then bill icon in vertical layout should be highlighted", () => {
-      const html = BillsUI({ data: []})
-      document.body.innerHTML = html
+   /*    const html = BillsUI({ data: []})
+      document.body.innerHTML = html */
       //to-do write expect expression
+      const billIcon = document.querySelector(".active-icon");
+      expect(billIcon).toHaveStyle("backgroundColor", "#7bb1f7");
+
     })
     test("Then bills should be ordered from earliest to latest", () => {
       const html = BillsUI({ data: bills })
@@ -16,6 +20,16 @@ describe("Given I am connected as an employee", () => {
       const antiChrono = (a, b) => ((a < b) ? 1 : -1)
       const datesSorted = [...dates].sort(antiChrono)
       expect(dates).toEqual(datesSorted)
+    })
+
+    test("then proofs' bills should be opened in modal", () =>{
+      const actionIcon = document.querySelector(".icon-actions");
+      expect(actionIcon).toBe(true);
+    })
+
+    test("Employee could go to the new bills' page", () => {
+      const newBillButton = document.querySelector(".btn-primary");
+      expect(newBillButton).toBe(true);
     })
   })
 })
