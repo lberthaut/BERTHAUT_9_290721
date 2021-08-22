@@ -53,6 +53,7 @@ function hasExtension(inputID, exts) {
   return (new RegExp('(' + exts.join('|').replace(/\./g, '\\.') + ')$')).test(fileName);
 } */
   }
+  
   // not need to cover this function by tests
   createBill = (bill) => {
     if (this.firestore) {

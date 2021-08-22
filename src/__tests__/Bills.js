@@ -1,17 +1,15 @@
 import { screen } from "@testing-library/dom"
 import BillsUI from "../views/BillsUI.js"
 import { bills } from "../fixtures/bills.js"
-/* import default from "../views/VerticalLayout.js" */
+import Logout from "../containers/Logout.js"
+import * as Bills from "../containers/Bills.js"
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
-    test("Then bill icon in vertical layout should be highlighted", () => {
-   /*    const html = BillsUI({ data: []})
-      document.body.innerHTML = html */
+   /*  test("Then bill icon in vertical layout should be highlighted", () => {
+   const html = BillsUI({ data: []})
+      document.body.innerHTML = html
       //to-do write expect expression
-      const billIcon = document.querySelector(".active-icon");
-      expect(billIcon).toHaveStyle("backgroundColor", "#7bb1f7");
-
     })
     test("Then bills should be ordered from earliest to latest", () => {
       const html = BillsUI({ data: bills })
@@ -21,15 +19,26 @@ describe("Given I am connected as an employee", () => {
       const datesSorted = [...dates].sort(antiChrono)
       expect(dates).toEqual(datesSorted)
     })
-
-    test("then proofs' bills should be opened in modal", () =>{
-      const actionIcon = document.querySelector(".icon-actions");
-      expect(actionIcon).toBe(true);
+     */
+    test('User should click on the new bills button', () => {
+      const billButton = jest.fn();
+      Bills.handleClickNewBill(billButton);
+      expect(Bills.billButton).toHaveBeenCalled();
     })
 
-    test("Employee could go to the new bills' page", () => {
-      const newBillButton = document.querySelector(".btn-primary");
-      expect(newBillButton).toBe(true);
+    test('User should open a bill when he click on the eye button', () => {
+      const eyeButton = jest.fn();
+      Bills.handleClickIconEye(eyeButton);
+      expect(Bills.eyeButton).toHaveBeenCalled();
+    })
+
+    test('User should disconnect his session by clicking on the logout button', () => {
+      jest.mock(Logout);
+      beforeEach(() => {
+        Logout.mockClear();
+      })
+      const logoutButton = document.getElementById('layout-disconnect');
+      expect (Logout).toHaveBeenCalledWith(logoutButton);
     })
   })
 })
