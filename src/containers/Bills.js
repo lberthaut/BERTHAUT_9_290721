@@ -2,6 +2,7 @@ import { ROUTES_PATH } from '../constants/routes.js'
 import { formatDate, formatStatus } from "../app/format.js"
 import Logout from "./Logout.js"
 
+
 export default class {
     constructor({ document, onNavigate, firestore, localStorage }) {
         this.document = document
@@ -23,9 +24,12 @@ export default class {
     handleClickIconEye = (icon) => {
         const billUrl = icon.getAttribute("data-bill-url")
         const imgWidth = Math.floor($('#modaleFile').width() * 0.5)
-        $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;'><embed type="application/pdf, image/* width=${imgWidth} src=${billUrl} /></div>`)
+        $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;'><img width=${imgWidth} src=${billUrl} /></div>`)
         $('#modaleFile').modal('show')
     }
+
+  
+     
 
   // not need to cover this function by tests
   getBills = () => {

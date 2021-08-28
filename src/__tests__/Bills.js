@@ -1,8 +1,8 @@
 import { screen } from "@testing-library/dom"
 import BillsUI from "../views/BillsUI.js"
-import { bills } from "../fixtures/bills.js"
+import { handleClickNewBill } from "../containers/bills.js"
 import Logout from "../containers/Logout.js"
-import * as Bills from "../containers/Bills.js"
+
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
@@ -22,8 +22,7 @@ describe("Given I am connected as an employee", () => {
      */
     test('User should click on the new bills button', () => {
       const billButton = jest.fn();
-      Bills.handleClickNewBill(billButton);
-      expect(Bills.billButton).toHaveBeenCalled();
+      expect(handleClickNewBill(billButton)).toHaveBeenCalled();
     })
 
     test('User should open a bill when he click on the eye button', () => {

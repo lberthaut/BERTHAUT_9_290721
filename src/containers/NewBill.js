@@ -19,10 +19,17 @@ export default class NewBill {
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
-    this.firestore.storage.ref(`justificatifs/${fileName}`).put(file).then(snapshot => snapshot.ref.getDownloadURL()).then(url => {
+    const split = fileName.split(".");
+    const extension = split[split.length-1];
+    if(extension == "jpg" || extension == "jpeg" || extension == "png"){
+      this.firestore.storage.ref(`justificatifs/${fileName}`).put(file).then(snapshot => snapshot.ref.getDownloadURL()).then(url => {
         this.fileUrl = url
         this.fileName = fileName
       })
+    }else{
+      alert("Ce type de fichier n'est pas supporté. Veuillez joindre un fichier .jpg, .jpeg, ou .png");
+      this.document.querySelector(`input[data-testid="file"]`).value = "";
+    }
   }
   handleSubmit = e => {
     e.preventDefault()
@@ -43,9 +50,9 @@ export default class NewBill {
     }
     this.createBill(bill)
     this.onNavigate(ROUTES_PATH['Bills'])
- /*    document.querySelector(`input[data-testid="file"]`).reportValidity(); */
+ /* document.querySelector(`input[data-testid="file"]`).reportValidity();
 
-/*  if (!hasExtension(document.querySelector(`input[data-testid="file"]`), ['.jpg', '.gif', '.png'])) {
+if (!hasExtension(document.querySelector(`input[data-testid="file"]`), ['.jpg', '.gif', '.png'])) {
   alert("Ce type de fichier n'est pas supporté. Veuillez joindre un fichier .jpg, .jpeg, ou .png")
 }
 function hasExtension(inputID, exts) {
