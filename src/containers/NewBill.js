@@ -21,7 +21,7 @@ export default class NewBill {
     const fileName = filePath[filePath.length-1]
     const split = fileName.split(".");
     const extension = split[split.length-1];
-    if(extension == "jpg" || extension == "jpeg" || extension == "png"){
+    if(extension== "jpg" || extension== "jpeg" || extension== "png"){
       this.firestore.storage.ref(`justificatifs/${fileName}`).put(file).then(snapshot => snapshot.ref.getDownloadURL()).then(url => {
         this.fileUrl = url
         this.fileName = fileName
@@ -50,18 +50,10 @@ export default class NewBill {
     }
     this.createBill(bill)
     this.onNavigate(ROUTES_PATH['Bills'])
- /* document.querySelector(`input[data-testid="file"]`).reportValidity();
-
-if (!hasExtension(document.querySelector(`input[data-testid="file"]`), ['.jpg', '.gif', '.png'])) {
-  alert("Ce type de fichier n'est pas supporté. Veuillez joindre un fichier .jpg, .jpeg, ou .png")
-}
-function hasExtension(inputID, exts) {
-  var fileName = document.getElementById(inputID).nodeValue;
-  return (new RegExp('(' + exts.join('|').replace(/\./g, '\\.') + ')$')).test(fileName);
-} */
   }
   
   // not need to cover this function by tests
+  /* istanbul ignore next */
   createBill = (bill) => {
     if (this.firestore) {
       this.firestore.bills().add(bill).then(() => {

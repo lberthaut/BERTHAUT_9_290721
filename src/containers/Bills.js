@@ -26,12 +26,11 @@ export default class {
         const imgWidth = Math.floor($('#modaleFile').width() * 0.5)
         $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;'><img width=${imgWidth} src=${billUrl} /></div>`)
         $('#modaleFile').modal('show')
-    }
-
-  
+    } 
      
 
   // not need to cover this function by tests
+  /* istanbul ignore next */
   getBills = () => {
     const userEmail = localStorage.getItem('user') ?
       JSON.parse(localStorage.getItem('user')).email : ""

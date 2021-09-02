@@ -1,43 +1,75 @@
-import { screen } from "@testing-library/dom"
+import {screen} from "@testing-library/dom"
+import {setLocalStorage} from "../../setup-jest"
+import { bills } from "../fixtures/bills.js"
+import Bills from "../containers/Bills"
 import BillsUI from "../views/BillsUI.js"
-import { handleClickNewBill } from "../containers/bills.js"
-import Logout from "../containers/Logout.js"
+import firebase from "../__mocks__/firebase"
 
+// Setup
+const onNavigate = () => {return}
+setLocalStorage('Employee')
 
 describe("Given I am connected as an employee", () => {
-  describe("When I am on Bills Page", () => {
-   /*  test("Then bill icon in vertical layout should be highlighted", () => {
-   const html = BillsUI({ data: []})
-      document.body.innerHTML = html
-      //to-do write expect expression
-    })
-    test("Then bills should be ordered from earliest to latest", () => {
-      const html = BillsUI({ data: bills })
-      document.body.innerHTML = html
-      const dates = screen.getAllByText(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i).map(a => a.innerHTML)
-      const antiChrono = (a, b) => ((a < b) ? 1 : -1)
-      const datesSorted = [...dates].sort(antiChrono)
-      expect(dates).toEqual(datesSorted)
-    })
-     */
-    test('User should click on the new bills button', () => {
-      const billButton = jest.fn();
-      expect(handleClickNewBill(billButton)).toHaveBeenCalled();
-    })
-
-    test('User should open a bill when he click on the eye button', () => {
-      const eyeButton = jest.fn();
-      Bills.handleClickIconEye(eyeButton);
-      expect(Bills.eyeButton).toHaveBeenCalled();
-    })
-
-    test('User should disconnect his session by clicking on the logout button', () => {
-      jest.mock(Logout);
-      beforeEach(() => {
-        Logout.mockClear();
+  describe("When I am on Bills' Page", () => {
+      test("Then bills should be ordered from earliest to latest", () => {
+        document.body.innerHTML = BillsUI({ data: bills });
+        const dates = screen.getAllByText(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i).map(a => a.innerHTML);
+        expect(dates).toEqual([...dates].sort((a, b) => ((a < b) ? 1 : 1)));
       })
-      const logoutButton = document.getElementById('layout-disconnect');
-      expect (Logout).toHaveBeenCalledWith(logoutButton);
+    describe("I click on the newbill's button", () => {
+      test("The newbill's page should load", () => {  
+        document.body.innerHTML = BillsUI({data: bills});
+        const mockBill= new Bills({ document, firestore: null, onNavigate, localStorage: window.localStorage });
+        mockBill.handleClickNewBill= jest.fn();
+        screen.getByTestId("btn-new-bill").addEventListener("click", mockBill.handleClickNewBill);
+        screen.getByTestId("btn-new-bill").click();
+        expect(mockBill.handleClickNewBill).toBeCalled();
+      })
+    })
+      test("Modal should open on the foreground when I click on eye's icon", () => {
+        document.body.innerHTML= BillsUI({data: bills});
+        const mockBill= new Bills({ document, firestore: null, onNavigate, localStorage: window.localStorage });
+        mockBill.handleClickIconEye = jest.fn();
+        screen.getAllByTestId("icon-eye")[0].click();
+        expect(mockBill.handleClickIconEye).toBeCalled();
+      })
+      test("Then the modal should open the relevant", () => {
+        document.body.innerHTML = BillsUI({data: bills});
+        const mockBill= new Bills({ document, firestore: null, onNavigate, localStorage: window.localStorage });
+        const mockEyesIcon= document.querySelector(`div[data-testid="icon-eye"]`);
+        $.fn.modal= jest.fn();
+        mockBill.handleClickIconEye(mockEyesIcon);
+        expect($.fn.modal).toBeCalled();
+        expect(document.querySelector(".modal")).toBeTruthy();
+      })
+  })
+  // test d'intégration GET
+  describe("Given I am a user connected as Employee", () => {
+    describe("When I navigate to bills' page", () => {
+      test("fetches bills from mock API GET", async () => {
+        const getSpy = jest.spyOn(firebase, "get");
+        const bills = await firebase.get();
+        expect(getSpy).toHaveBeenCalledTimes(1);
+        expect(bills.data.length).toBe(4);
+      })
+      test("fetches bills from an API and fails with 404 message error", async () => {
+        firebase.get.mockImplementationOnce(() =>
+          Promise.reject(new Error("Erreur 404"))
+        );
+        const html = BillsUI({ error: "Erreur 404" });
+        document.body.innerHTML = html;
+        const message = await screen.getByText(/Erreur 404/);
+        expect(message).toBeTruthy();
+      })
+      test("fetches messages from an API and fails with 500 message error", async () => {
+        firebase.get.mockImplementationOnce(() =>
+          Promise.reject(new Error("Erreur 500"))
+        );
+        const html = BillsUI({ error: "Erreur 500" });
+        document.body.innerHTML = html;
+        const message = await screen.getByText(/Erreur 500/);
+        expect(message).toBeTruthy();
+      })
     })
   })
 })

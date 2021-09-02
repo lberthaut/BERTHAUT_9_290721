@@ -150,6 +150,7 @@ export default class {
   }
 
   // not need to cover this function by tests
+  /* istanbul ignore next */
   getBillsAllUsers = () => {
     if (this.firestore) {
       return this.firestore.bills().get().then(snapshot => {
@@ -166,6 +167,7 @@ export default class {
   }
     
   // not need to cover this function by tests
+  /* istanbul ignore next */
   updateBill = (bill) => {
     if (this.firestore) {
     return this.firestore.bill(bill.id).update(bill).then(bill => bill).catch(console.log)
