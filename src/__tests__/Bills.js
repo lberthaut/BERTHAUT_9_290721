@@ -43,6 +43,8 @@ describe("Given I am connected as an employee", () => {
         expect(document.querySelector(".modal")).toBeTruthy();
       })
   })
+
+  
   // test d'intégration GET
   describe("Given I am a user connected as Employee", () => {
     describe("When I navigate to bills' page", () => {

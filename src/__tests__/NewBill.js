@@ -48,11 +48,11 @@ describe("Given I am connected as an employee", () => {
       test('then the bill is created in bills page', async () => {
         document.body.innerHTML = NewBillUI()
         const mockNewBill = new NewBill({ document, firestore: firestore, onNavigate, localStorage: window.localStorage })
-        const submit = screen.getByTestId('form-new-bill')
+        const submitBill = screen.getByTestId('form-new-bill')
         const goodBill =
          {
           name: "Test d'une note de frais",
-          date: "2016-06-06",
+          date: "1988-10-24",
           type: "Services en ligne",
           amount: "5",
           pct: "5",
@@ -70,13 +70,12 @@ describe("Given I am connected as an employee", () => {
         document.querySelector(`input[data-testid="vat"]`).value = goodBill.vat
         document.querySelector(`input[data-testid="pct"]`).value = goodBill.pct
         document.querySelector(`textarea[data-testid="commentary"]`).value = goodBill.commentary
-        mockNewBill.fileUrl = goodBill.fileUrl
         mockNewBill.fileName = goodBill.fileName 
-        submit.addEventListener('click', handleSubmit)
-        fireEvent.click(submit)
+        mockNewBill.fileUrl = goodBill.fileUrl
+        submitBill.addEventListener('click', handleSubmit)
+        fireEvent.click(submitBill)
         expect(handleSubmit).toHaveBeenCalled()
       })
     })
   })
-    
 })
