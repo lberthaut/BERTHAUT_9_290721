@@ -26,7 +26,8 @@ describe("Given I am connected as an employee", () => {
         expect(mockBill.handleClickNewBill).toBeCalled();
       })
     })
-      test("Modal should open on the foreground when I click on eye's icon", () => {
+    describe("I click on the eye's icon", ()=>{
+      test("Modal should open on the foreground", () => {
         document.body.innerHTML= BillsUI({data: bills});
         const mockBill= new Bills({ document, firestore: null, onNavigate, localStorage: window.localStorage });
         mockBill.handleClickIconEye = jest.fn();
@@ -42,9 +43,9 @@ describe("Given I am connected as an employee", () => {
         expect($.fn.modal).toBeCalled();
         expect(document.querySelector(".modal")).toBeTruthy();
       })
+    })
   })
 
-  
   // test d'intégration GET
   describe("Given I am a user connected as Employee", () => {
     describe("When I navigate to bills' page", () => {
