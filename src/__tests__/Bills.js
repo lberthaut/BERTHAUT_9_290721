@@ -5,6 +5,7 @@ import Bills from "../containers/Bills"
 import BillsUI from "../views/BillsUI.js"
 import firebase from "../__mocks__/firebase"
 
+
 // Setup
 const onNavigate = () => {return}
 setLocalStorage('Employee')

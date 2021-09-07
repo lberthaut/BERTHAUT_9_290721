@@ -146,7 +146,6 @@ export default class {
     })
 
     return bills
-
   }
 
   // not need to cover this function by tests

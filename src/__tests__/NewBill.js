@@ -3,6 +3,8 @@ import { fireEvent, screen} from "@testing-library/dom"
 import NewBillUI from "../views/NewBillUI.js"
 import NewBill from "../containers/NewBill.js"
 import firestore from "../app/Firestore.js"
+import firebase from "../__mocks__/firebase"
+
 
 // Setup
 const onNavigate= () => {return}
@@ -52,8 +54,8 @@ describe("Given I am connected as an employee", () => {
         document.body.innerHTML= NewBillUI()
         const mockNewBill= new NewBill({ document, firestore: firestore, onNavigate, localStorage: window.localStorage })
         const submitBill= screen.getByTestId('form-new-bill')
-        const validBill=
-         {
+        const validBill= firebase.get();
+         /* {
           name: "Test d'une note de frais",
           date: "1988-10-10",
           type: "Services en ligne",
@@ -62,8 +64,8 @@ describe("Given I am connected as an employee", () => {
           vat: "5",
           commentary: "Test du champ commentaires",
           fileName: "Groovy.jpg",
-          fileUrl: "https://i.kym-cdn.com/entries/icons/original/000/031/025/cover.jpg"
-        }
+          fileUrl: "https://i.kym-cdn.coernem/entries/icons/original/000/031/025/cover.jpg"
+        } */
         const handleSubmit = jest.fn((e) => mockNewBill.handleSubmit(e))
         mockNewBill.createBill = (newBill) => newBill
         document.querySelector(`select[data-testid="expense-type"]`).value = validBill.type
@@ -80,5 +82,23 @@ describe("Given I am connected as an employee", () => {
         expect(handleSubmit).toHaveBeenCalled()
       })
     })
+  })
+  test("fetches bills from an API and fails with 404 message error", async () => {
+    firebase.get.mockImplementationOnce(() =>
+      Promise.reject(new Error("Erreur 404"))
+    )
+    const html = NewBillUI({ error: "Erreur 404" })
+    document.body.innerHTML = html
+    const message = await screen.getByText(/Erreur 404/)
+    expect(message).toBeTruthy()
+  })
+  test("fetches messages from an API and fails with 500 message error", async () => {
+    firebase.get.mockImplementationOnce(() =>
+      Promise.reject(new Error("Erreur 500"))
+    )
+    const html = NewBillUI({ error: "Erreur 500" })
+    document.body.innerHTML = html
+    const message = await screen.getByText(/Erreur 500/)
+    expect(message).toBeTruthy()
   })
 })
