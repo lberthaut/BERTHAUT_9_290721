@@ -32,24 +32,6 @@ describe("Given I am connected as an employee", () => {
         })
         expect(inputFile.files[0].name).toBe("test.jpg")
       })
-     /*  test("Load newBill's page and fails with 404 message error", async () => {
-        firebase.get.mockImplementationOnce(() =>
-          Promise.reject(new Error("Erreur 404"))
-        )
-        const html = NewBillUI({ error: "Erreur 404" })
-        document.body.innerHTML = html
-        const message = await screen.getByText(/Erreur 404/)
-        expect(message).toBeTruthy()
-      })
-      test("Load newBill's page and fails with 500 message error", async () => {
-        firebase.get.mockImplementationOnce(() =>
-          Promise.reject(new Error("Erreur 500"))
-        )
-        const html = NewBillUI({ error: "Erreur 500" })
-        document.body.innerHTML = html
-        const message = await screen.getByText(/Erreur 500/)
-        expect(message).toBeTruthy()
-      }) */
     describe("And I upload a non-supported file", () => {
       test("Then the alert message should be open", async () => {
         document.body.innerHTML = NewBillUI()
@@ -101,5 +83,79 @@ describe("Given I am connected as an employee", () => {
         expect(handleSubmit).toHaveBeenCalled()
       })
     })
+
+     test("New Bill is submit and fails with 404 message error", async () => {
+      firebase.post.mockImplementationOnce(() =>
+        Promise.reject(new Error("Erreur 404"))
+      )
+      const html = NewBillUI({ error: "Erreur 404" })
+      document.body.innerHTML = html
+      const message = await screen.getByText(/Erreur 404/)
+      expect(message).toBeTruthy()
+    })
+    test("New Bill is submit and fails with 500 message error", async () => {
+      firebase.post.mockImplementationOnce(() =>
+        Promise.reject(new Error("Erreur 500"))
+      )
+      const html = NewBillUI({ error: "Erreur 500" })
+      document.body.innerHTML = html
+      const message = await screen.getByText(/Erreur 500/)
+      expect(message).toBeTruthy()
+    })
   })
 })
+
+//Test d'un autre étudiant
+
+/* describe("Given I am a user connected as Employee", () => {
+  describe("when I create a new bill", () => {
+    // vérifie que le post vers la database s'effectue correctement
+    test("Add bill from mock API POST", async () => {
+      const postSpy = jest.spyOn(firebase, "post");
+
+      const newBill = {
+        id: "47qAXb6fIm2zOKkLzMro",
+        vat: "80",
+        fileUrl:
+          "https://firebasestorage.googleapis.com/v0/b/billable-677b6.a…f-1.jpg?alt=media&token=c1640e12-a24b-4b11-ae52-529112e9602a",
+        status: "refused",
+        type: "Hôtel et logement",
+        commentAdmin: "Voir avec l'employé",
+        commentary: "séminaire billed",
+        name: "Facture nuit hotel pour séminaire sur la foudre",
+        fileName: "preview-facture-free-201801-pdf-1.jpg",
+        date: "2021-05-21",
+        amount: 400,
+        email: "a@a",
+        pct: 20,
+      };
+      const bills = await firebase.post(newBill);
+
+      expect(postSpy).toHaveBeenCalledTimes(1);
+      expect(bills.data.length).toBe(5);
+    });
+    // verifie que la page error est bien affichée si il y a un reject dans l'appel de la database
+    // 404 Ressource non trouvée
+    test("Add bill to API and fails with 404 message error", async () => {
+      firebase.post.mockImplementationOnce(() => Promise.reject(new Error("Erreur 404")));
+      const html = BillsUI({ error: "Erreur 404" });
+      document.body.innerHTML = html;
+
+      const message = await screen.getByText(/Erreur 404/);
+
+      expect(message).toBeTruthy();
+    });
+    // verifie que la page error est bien affichée si il y a un reject dans l'appel de la database
+    // 500 erreur du serveur
+    test("Add bill to API and fails with 500 messager error", async () => {
+      firebase.post.mockImplementationOnce(() => Promise.reject(new Error("Erreur 500")));
+
+      const html = BillsUI({ error: "Erreur 500" });
+      document.body.innerHTML = html;
+
+      const message = await screen.getByText(/Erreur 500/);
+
+      expect(message).toBeTruthy();
+    });
+  });
+}); */
