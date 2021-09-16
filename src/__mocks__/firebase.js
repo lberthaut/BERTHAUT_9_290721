@@ -67,30 +67,4 @@ export default {
   post: newBill => {
     return Promise.resolve(newBill.name + 'received')
   }
-
-  //POST allant avec le test POST de newBill.js d'un autre étudiant
-  
-/* post: async (bill) => {
-  const getData = await firebase.get();
-
-  return Promise.resolve({
-    data: [
-      ...getData.data,
-      {
-        id: bill.id,
-        vat: bill.vat,
-        fileUrl: bill.fileUrl,
-        status: bill.status,
-        type: bill.type,
-        commentAdmin: bill.commentAdmin,
-        name: bill.name,
-        fileName: bill.fileName,
-        date: bill.date,
-        amount: bill.amount,
-        email: bill.email,
-        pct: bill.pct,
-      },
-    ],
-  });
-},  */
 }
