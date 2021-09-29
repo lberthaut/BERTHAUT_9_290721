@@ -1,4 +1,8 @@
-export default {
+import {bills} from "../fixtures/bills.js"
+
+const bill = bills;
+
+export const mockBills=  {
   get: () => {
     return Promise.resolve({
       data: [{
@@ -63,8 +67,8 @@ export default {
       }]
     })
   },
-  
-  post: newBill => {
-    return Promise.resolve(newBill.name + 'received')
+  post: () => {
+    const oneBill= bill[0];
+    return Promise.resolve(oneBill.name + ' received')
   }
 }

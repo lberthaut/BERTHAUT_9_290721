@@ -3,8 +3,9 @@ import { fireEvent, screen} from "@testing-library/dom"
 import NewBillUI from "../views/NewBillUI.js"
 import NewBill from "../containers/NewBill.js"
 import firestore from "../app/Firestore.js"
-import firebase from "../__mocks__/firebase"
 import {errorPage404, errorPage500} from "../__mocks__/ErrorPage"
+import {mockBills} from "../__mocks__/firebase"
+
 
 
 // Setup
@@ -55,19 +56,8 @@ describe("Given I am connected as an employee", () => {
         document.body.innerHTML= NewBillUI()
         const mockNewBill= new NewBill({ document, firestore: firestore, onNavigate, localStorage: window.localStorage })
         const submitBill= screen.getByTestId('form-new-bill')
-        const validBills= await firebase.get();
+        const validBills= await mockBills.get();
         const validBill= validBills.data[0];
-         /* {
-          name: "Test d'une note de frais",
-          date: "1988-10-10",
-          type: "Services en ligne",
-          amount: "5",
-          pct: "5",
-          vat: "5",
-          commentary: "Test du champ commentaires",
-          fileName: "Groovy.jpg",
-          fileUrl: "https://i.kym-cdn.com/entries/icons/original/000/031/025/cover.jpg"
-        } */
         const handleSubmit = jest.fn((e) => mockNewBill.handleSubmit(e))
         mockNewBill.createBill = (newBill) => newBill
         document.querySelector(`select[data-testid="expense-type"]`).value = validBill.type
@@ -84,22 +74,21 @@ describe("Given I am connected as an employee", () => {
         expect(handleSubmit).toHaveBeenCalled()
       })
       test("fetches bills from mock API GET", async () => {
-        const getSpy = jest.spyOn(firebase, "get");
-        const bills = await firebase.get();
+        const getSpy = jest.spyOn(mockBills, "get");
+        const bills = await mockBills.get();
         expect(getSpy).toHaveBeenCalledTimes(1);
         expect(bills.data.length).toBe(4);
       })
       test("New Bill is submit and fails with 404 message error", async () => {
         errorPage404();
-        const html= NewBillUI({error: "Erreur 404"});
-        document.body.innerHTML= html;
-        const message= await screen.getByText(/Erreur404/);
+        document.body.innerHTML= "Erreur 404";
+        const message= await screen.getByText(/Erreur 404/);
         expect(message).toBeTruthy();
       });
+
       test("fetches messages from an API and fails with 500 message error", async ()=>{
         errorPage500();
-        const html= NewBillUI({error: "Erreur 500"});
-        document.body.innerHTML= html;
+        document.body.innerHTML= "Erreur 500";
         const message= await screen.getByText(/Erreur 500/);
         expect(message).toBeTruthy();
       });

@@ -3,8 +3,7 @@ import {setLocalStorage} from "../../setup-jest"
 import { bills } from "../fixtures/bills.js"
 import Bills from "../containers/Bills"
 import BillsUI from "../views/BillsUI.js"
-import firebase from "../__mocks__/firebase"
-
+import {mockBills}  from "../__mocks__/firebase"
 
 // Setup
 const onNavigate = () => {return}
@@ -51,13 +50,13 @@ describe("Given I am connected as an employee", () => {
   describe("Given I am a user connected as Employee", () => {
     describe("When I navigate to bills' page", () => {
       test("fetches bills from mock API GET", async () => {
-        const getSpy = jest.spyOn(firebase, "get");
-        const bills = await firebase.get();
+        const getSpy = jest.spyOn(mockBills, "get");
+        const bills = await mockBills.get();
         expect(getSpy).toHaveBeenCalledTimes(1);
         expect(bills.data.length).toBe(4);
       })
       test("fetches bills from an API and fails with 404 message error", async () => {
-        firebase.get.mockImplementationOnce(() =>
+        mockBills.get.mockImplementationOnce(() =>
           Promise.reject(new Error("Erreur 404"))
         );
         const html = BillsUI({ error: "Erreur 404" });
@@ -66,7 +65,7 @@ describe("Given I am connected as an employee", () => {
         expect(message).toBeTruthy();
       })
       test("fetches messages from an API and fails with 500 message error", async () => {
-        firebase.get.mockImplementationOnce(() =>
+        mockBills.get.mockImplementationOnce(() =>
           Promise.reject(new Error("Erreur 500"))
         );
         const html = BillsUI({ error: "Erreur 500" });
