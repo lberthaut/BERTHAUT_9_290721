@@ -73,12 +73,6 @@ describe("Given I am connected as an employee", () => {
         fireEvent.click(submitBill)
         expect(handleSubmit).toHaveBeenCalled()
       })
-      test("fetches bills from mock API GET", async () => {
-        const getSpy = jest.spyOn(mockBills, "get");
-        const bills = await mockBills.get();
-        expect(getSpy).toHaveBeenCalledTimes(1);
-        expect(bills.data.length).toBe(4);
-      })
       test("New Bill is submit and fails with 404 message error", async () => {
         errorPage404();
         document.body.innerHTML= "Erreur 404";
